@@ -1,0 +1,74 @@
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      <link
+         href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+         rel="stylesheet"
+         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+         crossorigin="anonymous"
+      /><link
+         rel="stylesheet"
+         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+      />
+      <link rel="stylesheet" href="./../../public/styles.css" />
+      <script
+         src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+         crossorigin="anonymous"
+      ></script>
+      <script src="./../../public/app.js"></script>
+      <title>To-Do App</title>
+   </head>
+   <body
+      class="d-flex flex-column align-items-center"
+      style="width: 100%; min-height:700px"
+   >
+      <div
+         class="position-sticky bg-dark text-white mb-5 p-4 d-flex flex-row align-items-center justify-content-between"
+         style="width: 100%; height:5rem"
+      >
+         <h2>
+            {{#if user}}
+               Hello,
+               {{{user.firstName}}}!
+            {{else}}
+               Hello!
+            {{/if}}
+
+         </h2>
+         {{#if user}}
+            <div>
+               <ul class="nav justify-content-end">
+                  <li class="nav-item position-relative">
+                     <a
+                        class="nav-link active text-white fs-4 px-2"
+                        aria-current="page"
+                        href="/todos/{{{user.userId}}}"
+                     >My Todos
+                     </a>
+                     {{#if todos}}
+                        <span
+                           class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        >
+                           {{{todos.length}}}
+                           <span class="visually-hidden">unread messages</span>
+                        </span>
+                     {{/if}}
+                  </li>
+                  <li class="nav-item">
+                     <a
+                        style="text-decoration: none;"
+                        class="nav-link text-white fs-4 px-3"
+                        href="/logout"
+                     >Logout</a>
+                  </li>
+               </ul>
+            </div>
+         {{/if}}
+      </div>
+      {{{body}}}
+   </body>
+</html>

@@ -1,0 +1,123 @@
+<div class="d-flex flex-column ">
+   <div class="input-group d-flex justify-content-center mb-2 mt-5" style="width: 600px;">
+      <h2 class="text-center mb-3"> What are you up to today?</h2>
+   </div>
+<ul class="list-group">
+   <div class="accordion" id="accordionExample">
+   {{#each todos}}
+   <div class="accordion-item todo-item-{{{todoId}}} " >
+      <div class="accordion-header d-flex flex-row align-items-center" id="heading{{{todoId}}}" >
+         <button class="accordion-button collapsed border-bottom border-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{{todoId}}}" aria-expanded="false" aria-controls="collapse{{{todoId}}}">
+            <span class="badge rounded-pill fs-5 priority-{{{priority}}} bg-opacity-50 me-5" id="todo-badge-{{{todoId}}}" style="width: 110px;" dataset-id="{{{todoId}}}">{{{priority}}} </span>
+            {{#if completed}}
+               <div class="fw-bold todo-title-{{{todoId}}} todo-completed fs-5" data-completed="{{{completed}}}" id="todo-title-{{{todoId}}}">{{{title}}}</div>
+               {{else}}
+               <div class="fw-bold fs-5 todo-title-{{{todoId}}}" data-completed="{{{completed}}}" id="todo-title-{{{todoId}}}">{{{title}}}</div>
+            {{/if}}
+         </button>
+         <button style="outline: none; border: none" id="delete-todo-btn-{{{todoId}}}" class="delete-todo-btn bg-white" data-id="{{{todoId}}}">
+            <i class="bi bi-trash-fill text-danger fs-3" ></i>
+         </button>
+         <button style="outline: none; border: none" type="button" id="edit-todo-btn-{{{todoId}}}" class="edit-todo-btn bg-white" data-id="{{{todoId}}}" data-bs-toggle="modal" data-bs-target="#edit-todo-modal-{{{todoId}}}" style="box-shadow: .5rem .5rem 1rem rgba(0,0,0, .2);">
+            <i class="bi bi-pen-fill text-secondary"></i>
+         </button>
+         <button style="outline: none; border: none" id="mark-completed-btn-{{{todoId}}}" class="mark-completed-todo-btn bg-white" data-id="{{{todoId}}}">
+            {{#if completed}}
+            <i class="bi bi-arrow-clockwise text-danger fs-3"></i>
+            {{else}}
+            <i class="bi bi-check text-success fs-3"></i>
+            {{/if}}
+         </button>
+      </div>
+      <div id="collapse{{{todoId}}}" class="accordion-collapse collapse " aria-labelledby="heading{{{todoId}}}" data-bs-parent="#accordionExample" >
+         <div class="accordion-body mx-5">
+            <p dataset-id="{{{todoId}}}" id="todo-description-{{{todoId}}}">
+            {{{description}}}
+            </p>
+         </div>
+      </div>
+   </div>
+
+<!-- Edit todo modal -->
+<div class="modal fade" id="edit-todo-modal-{{{todoId}}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-id="{{{todoId}}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit todo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+         <div class="mb-3">
+            <label for="todo-title" class="form-label">Title</label>
+            <input type="text" class="form-control border border-primary" name="title" id="edit-todo-{{{todoId}}}-title" placeholder="e.g. walk the dog" value="{{{title}}}" > </input>
+         </div>
+         <div class="mb-3">
+            <label for="todo-description" class="form-label">Description</label>
+            <textarea class="form-control border border-primary" id="edit-todo-{{{todoId}}}-description" name="description" rows="3" placeholder="e.g. else my dog will be mad at me">{{{description}}}</textarea>
+         </div>
+         <label for="todo-priority" class="form-label">Priority</label>
+         <div class="form-floating">
+            <select class="form-select border border-primary" id="edit-todo-{{{todoId}}}-priority" name="priority" aria-label="Floating label select example" >
+               <option value="low" style="background-color: var(--bs-success);">Low</option>
+               <option value="medium" style="background-color: var(--bs-yellow);">Medium</option>
+               <option value="high" style="background-color: var(--bs-orange);">High</option>
+               <option value="urgent" style="background-color: var(--bs-danger);">Urgent</option>
+            </select>
+            <label for="todo-priority">Select a priority: </label>
+         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary edit-todo" value="Save" data-id="{{{todoId}}}">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+      </div>
+    </div>
+  </div>
+</div>
+   {{/each}}
+   </div>
+   </ul>
+<button type="button" class="btn btn-primary mt-3 mx-auto fs-4 py-2" data-bs-toggle="modal" data-bs-target="#exampleModal" style="box-shadow: .5rem .5rem 1rem rgba(0,0,0, .2); width:200px" >
+<i class="bi bi-plus-lg mx-2"></i>
+  Add Todo
+</button>
+<!-- Modals -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add a new todo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+         <div class="mb-3">
+            <label for="todo-title" class="form-label">Title</label>
+            <input type="text" class="form-control border border-primary" name="title" id="todo-title" placeholder="e.g. walk the dog">
+         </div>
+         <div class="mb-3">
+            <label for="todo-description" class="form-label">Description</label>
+            <textarea class="form-control border border-primary" id="todo-description" name="description" rows="3" placeholder="e.g. else my dog will be mad at me"></textarea>
+         </div>
+         <label for="todo-priority" class="form-label">Priority</label>
+         <div class="form-floating">
+            <select class="form-select border border-primary" id="todo-priority" name="priority" aria-label="Floating label select example">
+               <option value="low" selected style="background-color: var(--bs-success);">Low</option>
+               <option value="medium" style="background-color: var(--bs-yellow);">Medium</option>
+               <option value="high" style="background-color: var(--bs-orange);">High</option>
+               <option value="urgent" style="background-color: var(--bs-danger);">Urgent</option>
+            </select>
+            <label for="todo-priority">Select a priority: </label>
+         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary add-todo" value="Save">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</ul>
+<div>

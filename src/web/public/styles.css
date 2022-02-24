@@ -1,0 +1,40 @@
+.priority-low {
+   --bs-bg-opacity: 1;
+   color: white !important;
+   background-color: var(--bs-success) !important;
+   padding-inline: 1rem;
+   padding-block: 0.5rem;
+}
+
+.priority-medium {
+   --bs-bg-opacity: 0.5;
+   color: black !important;
+   background-color: var(--bs-yellow) !important;
+   padding-inline: 1rem;
+   padding-block: 0.5rem;
+}
+
+.priority-high {
+   --bs-bg-opacity: 0.5;
+   color: black !important;
+   background-color: var(--bs-orange) !important;
+   padding-inline: 1rem;
+   padding-block: 0.5rem;
+}
+
+.priority-urgent {
+   --bs-bg-opacity: 0.5;
+   color: black !important;
+   background-color: var(--bs-danger) !important;
+   padding-inline: 1rem;
+   padding-block: 0.5rem;
+}
+
+.todo-completed {
+   text-decoration: line-through;
+   text-decoration-color: red;
+}
+
+.todo-uncompleted {
+   text-decoration: none;
+}
