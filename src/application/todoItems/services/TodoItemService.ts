@@ -1,13 +1,13 @@
-import { NotFountException } from "./../../common/exceptions/ApplicationExceptions";
-import { User } from "./../../../infrastructure/persistence/models/User";
+import { NotFoundException } from "./../../common/exceptions/ApplicationExceptions";
+import { User } from "@infrastructure/persistence/models/User";
 import {
    ITodoItemRepo,
    ITodoItemRepository,
-} from "./../../../infrastructure/persistence/repositories/TodoItemRepository";
+} from "@infrastructure/persistence/repositories/TodoItemRepository";
 import {
    IUserRepo,
    IUserRepository,
-} from "./../../../infrastructure/persistence/repositories/UserRepository";
+} from "@infrastructure/persistence/repositories/UserRepository";
 import { IValidator } from "../../common/IValidator";
 import { CreateTodoInputModel } from "../models/CreateTodoInputModel";
 import { CreateTodoOutputModel } from "../models/CreateTodoOutputModel";
@@ -19,7 +19,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ICreateTodoValidator } from "../validators/CreateTodoValidator";
 
 export interface ITodoItemService {
-   create(todoInput: CreateTodoInputModel): Promise<number>;
+   create(todoInput: CreateTodoInputModel): Promise<CreateTodoOutputModel>;
    edit(editTodoInput: EditTodoInputModel): Promise<EditTodoOutputModel>;
    delete(todoId: number): Promise<boolean>;
    getAllByUserId(id: User["id"]): Promise<TodoOutputModel[]>;
@@ -56,7 +56,7 @@ export class TodoItemService implements ITodoItemService {
          priority: Priority.toNumber(rest.priority),
       });
 
-      if (!newTodo) throw new NotFountException("Todo item does not exist.");
+      if (!newTodo) throw new NotFoundException("Todo item does not exist.");
 
       return EditTodoOutputModel.from(newTodo);
    }
@@ -65,7 +65,7 @@ export class TodoItemService implements ITodoItemService {
       const todo = await this._todoItemRepo.findById(todoId);
 
       if (!todo) {
-         throw new NotFountException("Todo item does not exist.");
+         throw new NotFoundException("Todo item does not exist.");
       }
 
       todo.completed = !todo.completed;
@@ -73,19 +73,21 @@ export class TodoItemService implements ITodoItemService {
       return EditTodoOutputModel.from(await this._todoItemRepo.save(todo));
    }
 
-   async create(todoInput: CreateTodoInputModel): Promise<number> {
+   async create(
+      todoInput: CreateTodoInputModel
+   ): Promise<CreateTodoOutputModel> {
       this._todoItemValidator.validate(todoInput);
       const { userId } = todoInput;
 
       const user = await this._userRepo.findById(userId);
-      if (!user) throw new NotFountException("User not found.");
+      if (!user) throw new NotFoundException("User not found.");
 
       const todoItem = CreateTodoInputModel.toTodoItem(todoInput);
       todoItem.user = user;
 
       const newTodo = await this._todoItemRepo.save(todoItem);
       console.log(newTodo);
-      return newTodo.id;
+      return CreateTodoOutputModel.from(newTodo);
    }
 
    async getAllByUserId(userId: number): Promise<TodoOutputModel[]> {

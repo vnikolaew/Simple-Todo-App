@@ -14,14 +14,14 @@ window.onload = function (e) {
       "button.mark-completed-todo-btn"
    );
 
-   toggleCompletionButtons.forEach((button) =>
+   toggleCompletionButtons?.forEach((button) =>
       button.addEventListener("click", (e) => {
          const todoId = button.dataset.id;
          toggleTodoCompletion(todoId);
       })
    );
 
-   editTodoButtons.forEach((button) =>
+   editTodoButtons?.forEach((button) =>
       button.addEventListener("click", (e) => {
          const todoId = button.dataset.id;
          const title = document.querySelector(
@@ -60,7 +60,7 @@ window.onload = function (e) {
       })
    );
 
-   addTodoButton.addEventListener("click", (e) => {
+   addTodoButton?.addEventListener("click", (e) => {
       // Add a todo item:
       const title = document.querySelector("input#todo-title").value;
       const description = document.querySelector(
@@ -70,7 +70,7 @@ window.onload = function (e) {
       addTodoItem(title, description, priority);
    });
 
-   deleteTodoButtons.forEach((button) => {
+   deleteTodoButtons?.forEach((button) => {
       button.addEventListener("click", () => {
          // Delete the todo:
          const todoId = +button.dataset.id;

@@ -7,8 +7,8 @@ import { engine } from "express-handlebars";
 import {
    AppExceptionHandler,
    HttpExceptionFilter,
-} from "@web/exceptions/ExceptionFilters";
-import { HttpSpeedTestInterceptor } from "@web/interceptors/HttpSpeedTestInterceptor";
+} from "@web/common/exceptions/ExceptionFilters";
+import { HttpSpeedTestInterceptor } from "@web/common/interceptors/HttpSpeedTestInterceptor";
 import { ShutdownSignal } from "@nestjs/common";
 
 async function bootstrap() {

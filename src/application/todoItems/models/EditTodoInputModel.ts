@@ -1,6 +1,3 @@
-import { TodoItem } from "@infrastructure/persistence/models/TodoItem";
-import { Priority } from "./TodoItemModel";
-
 export class EditTodoInputModel {
    public todoId: number;
    public title?: string;
@@ -17,20 +14,5 @@ export class EditTodoInputModel {
       this.title = title;
       this.description = description;
       this.priority = priority;
-   }
-
-   static from(todoItem: TodoItem) {
-      const {
-         user: { id },
-         title,
-         description,
-         priority,
-      } = todoItem;
-      return new EditTodoInputModel(
-         id,
-         title,
-         description,
-         Priority.toString(priority)
-      );
    }
 }

@@ -17,6 +17,11 @@ export class UserRepository extends IUserRepository {
    }
 
    public async findByEmail(email: User["email"]): Promise<User | null> {
-      return (await this._data.findOne({ where: { email } })) ?? null;
+      return (
+         (await this._data.findOne({
+            where: { email },
+            relations: ["todoItems"],
+         })) ?? null
+      );
    }
 }

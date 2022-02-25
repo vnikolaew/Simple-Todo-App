@@ -8,7 +8,7 @@ import { IEncryptionService } from "./EncryptionService";
 import {
    ApplicationException,
    InvalidFieldException,
-   NotFountException,
+   NotFoundException,
 } from "../../common/exceptions/ApplicationExceptions";
 
 import {
@@ -67,7 +67,7 @@ export class IdentityService implements IIdentityService {
       // Find the user by their email:
       const user = await this._userRepo.findByEmail(email);
       if (!user) {
-         throw new NotFountException(
+         throw new NotFoundException(
             "User with the specified email does not exist."
          );
       }
@@ -81,6 +81,7 @@ export class IdentityService implements IIdentityService {
       if (!passwordMatch) {
          throw new InvalidFieldException("Passwords didn't match.");
       }
+      console.log(user);
 
       return UserOutputModel.from(user);
    }
@@ -96,7 +97,7 @@ export class IdentityService implements IIdentityService {
 
       const user = await this._userRepo.findById(userId);
 
-      if (!user) throw new NotFountException("User does not exist.");
+      if (!user) throw new NotFoundException("User does not exist.");
 
       user.password = await this._encryptionService.hash(newPassword);
 

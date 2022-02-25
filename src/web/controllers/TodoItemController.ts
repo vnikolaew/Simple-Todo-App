@@ -38,12 +38,12 @@ export class TodoItemController {
       // @ts-ignore
       const { userId } = session.user;
 
-      const newTodoId = await this._todoItemService.create({
+      const newTodo = await this._todoItemService.create({
          userId,
          ...createTodoInput,
       });
-      console.log(newTodoId);
-      return newTodoId;
+      console.log(newTodo);
+      return newTodo;
    }
 
    @Put("/:id")

@@ -10,7 +10,7 @@ export class InvalidFieldException extends ApplicationException {
    }
 }
 
-export class NotFountException extends ApplicationException {
+export class NotFoundException extends ApplicationException {
    constructor(message: string) {
       super(message);
    }

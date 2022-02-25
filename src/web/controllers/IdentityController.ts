@@ -17,17 +17,27 @@ import {
    Res,
    Session,
 } from "@nestjs/common";
+import { UserLoginValidationPipe } from "@web/common/pipes/UserLoginValidationPipe";
+import { UserSignUpValidationPipe } from "@web/common/pipes/UserSignUpValidationPipe";
+import { User } from "@web/common/decorators/UserDecorator";
 
-interface UserLoginRequestModel {
+export interface UserLoginRequestModel {
    email: string;
    password: string;
 }
 
-interface UserRegisterRequestModel {
+export interface UserRegisterRequestModel {
    firstName: string;
    lastName: string;
    email: string;
    password: string;
+}
+
+export interface SessionUser {
+   userId: number;
+   email: string;
+   firstName: string;
+   lastName: string;
 }
 
 @Controller("")
@@ -42,15 +52,11 @@ export class IdentityController {
    @Redirect("/main")
    async login(
       @Session() session: Request["session"],
-      @Body() userLoginInput: UserLoginRequestModel,
+      @Body(new UserLoginValidationPipe())
+      userLoginInput: UserLoginRequestModel,
       @Res({ passthrough: true }) res: Response
    ) {
       const { email, password } = userLoginInput;
-      if (!email || !password)
-         return res
-            .status(HttpStatus.BAD_REQUEST)
-            .send("Missing login fields.");
-
       const user = await this._identityService.login({ email, password });
 
       // @ts-ignore
@@ -66,7 +72,7 @@ export class IdentityController {
    @Get("/logout")
    @HttpCode(HttpStatus.OK)
    @Redirect("/")
-   async logout(@Session() session: Request["session"], @Res() res: Response) {
+   async logout(@Session() session: Request["session"]) {
       if (session) {
          session?.destroy(() => {});
       }
@@ -75,16 +81,12 @@ export class IdentityController {
    @Post("/register")
    @Redirect("/main")
    async register(
-      @Req() session: Request["session"],
-      @Body()
+      @Session() session: Request["session"],
+      @Body(new UserSignUpValidationPipe())
       userRegisterInput: UserRegisterRequestModel,
       @Res()
       res: Response
    ) {
-      // const { firstName, lastName, email, password } = req.body;
-      // if (!email || !password || !firstName || !lastName)
-      //    return res.status(404).send("Missing login fields.");
-
       const user = await this._identityService.register(userRegisterInput);
 
       // @ts-ignore
@@ -94,20 +96,16 @@ export class IdentityController {
    @Render("register")
    @Header("Content-Type", "text/html")
    @Get("/register")
-   async registerPage() {
-      console.log("Rendering Register page ...");
-   }
+   async registerPage() {}
 
    @Put("/change-password")
    @HttpCode(HttpStatus.NO_CONTENT)
    async changePassword(
       @Body()
       userChangePasswordInput: Omit<UserChangePasswordInputModel, "userId">,
-      @Session() session: Request["session"]
+      @User() user: SessionUser
    ) {
-      // @ts-ignore
-      const { userId } = session.user;
-
+      const { userId } = user;
       return await this._identityService.changePassword({
          userId,
          ...userChangePasswordInput,

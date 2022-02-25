@@ -3,7 +3,7 @@
       <h2 class="text-center mb-3"> What are you up to today?</h2>
    </div>
 <ul class="list-group">
-   <div class="accordion" id="accordionExample">
+   <div class="accordion " id="accordionExample" style="box-shadow: .5rem .5rem 1rem rgba(0,0,0, .3);">
    {{#each todos}}
    <div class="accordion-item todo-item-{{{todoId}}} " >
       <div class="accordion-header d-flex flex-row align-items-center" id="heading{{{todoId}}}" >
@@ -30,7 +30,7 @@
          </button>
       </div>
       <div id="collapse{{{todoId}}}" class="accordion-collapse collapse " aria-labelledby="heading{{{todoId}}}" data-bs-parent="#accordionExample" >
-         <div class="accordion-body mx-5">
+         <div class="accordion-body mx-5 fs-5">
             <p dataset-id="{{{todoId}}}" id="todo-description-{{{todoId}}}">
             {{{description}}}
             </p>
