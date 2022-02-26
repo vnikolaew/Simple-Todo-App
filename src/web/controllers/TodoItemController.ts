@@ -1,7 +1,8 @@
 import { CreateTodoInputModel } from "@application/todoItems/models/CreateTodoInputModel";
+import { SessionUser } from "./IdentityController";
 import { EditTodoInputModel } from "@application/todoItems/models/EditTodoInputModel";
 import { ITodoItemService } from "@application/todoItems/services/TodoItemService";
-import { Request, Response } from "express";
+import { Response } from "express";
 import {
    Body,
    Controller,
@@ -14,11 +15,10 @@ import {
    ParseIntPipe,
    Post,
    Put,
-   Redirect,
    Render,
    Res,
-   Session,
 } from "@nestjs/common";
+import { User } from "@web/common/decorators/UserDecorator";
 
 @Controller("/todos")
 export class TodoItemController {
@@ -30,19 +30,17 @@ export class TodoItemController {
    @Post("/")
    @HttpCode(HttpStatus.CREATED)
    async create(
-      @Session() session: Request["session"],
-      @Res({ passthrough: true }) res: Response,
+      @User() user: SessionUser,
       @Body()
       createTodoInput: Omit<CreateTodoInputModel, "userId">
    ) {
       // @ts-ignore
-      const { userId } = session.user;
+      const { userId } = user;
 
       const newTodo = await this._todoItemService.create({
          userId,
          ...createTodoInput,
       });
-      console.log(newTodo);
       return newTodo;
    }
 
@@ -67,8 +65,8 @@ export class TodoItemController {
    @Get("/:id")
    @Render("todos-page")
    @HttpCode(HttpStatus.OK)
-   async byUserId(@Param("id") id: string, @Res() res: Response) {
-      const todos = await this._todoItemService.getAllByUserId(Number(id));
+   async byUserId(@User() user: SessionUser) {
+      const todos = await this._todoItemService.getAllByUserId(user.userId);
 
       return { todos };
    }

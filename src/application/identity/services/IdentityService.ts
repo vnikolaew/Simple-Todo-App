@@ -81,7 +81,8 @@ export class IdentityService implements IIdentityService {
       if (!passwordMatch) {
          throw new InvalidFieldException("Passwords didn't match.");
       }
-      console.log(user);
+      console.log("Found user: ", user);
+      console.log("Todos: " + user.todoItems.length);
 
       return UserOutputModel.from(user);
    }

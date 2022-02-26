@@ -13,22 +13,25 @@ export class RegisterUserValidator implements IValidator<RegisterInputModel> {
    public validate(userInput: RegisterInputModel) {
       const { email, password, firstName, lastName } = userInput;
 
-      Guard.forValidEmail(email);
-      Guard.forStringLength(email, 0, UserConstants.maxEmailLength);
-      Guard.forStringLength(
-         password,
-         UserConstants.minPasswordLength,
-         UserConstants.maxPasswordLength
-      );
       Guard.forStringLength(
          firstName,
          UserConstants.minNameLength,
-         UserConstants.maxNameLength
+         UserConstants.maxNameLength,
+         "First name"
       );
+      Guard.forValidEmail(email);
+      Guard.forStringLength(email, 0, UserConstants.maxEmailLength);
       Guard.forStringLength(
          lastName,
          UserConstants.minNameLength,
-         UserConstants.maxNameLength
+         UserConstants.maxNameLength,
+         "Last name"
+      );
+      Guard.forStringLength(
+         password,
+         UserConstants.minPasswordLength,
+         UserConstants.maxPasswordLength,
+         "Password"
       );
    }
 }

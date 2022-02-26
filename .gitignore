@@ -2,8 +2,8 @@
 /dist
 /node_modules
 .dev.env
-.prettierignore
-.eslintignore
+./.prettierignore
+./.eslintignore
 
 # Logs
 logs

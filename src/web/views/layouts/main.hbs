@@ -23,8 +23,8 @@
       <title>To-Do App</title>
    </head>
    <body
-      class="d-flex flex-column align-items-center"
-      style="width: 100%; min-height:700px"
+      class="d-flex flex-column align-items-center .bg-primary bg-opacity-50"
+      style="width: 100%; min-height:700px; background-color:#99999965"
    >
       <div
          class="position-sticky bg-dark text-white mb-5 p-4 d-flex flex-row align-items-center justify-content-between"
@@ -49,11 +49,11 @@
                         href="/todos/{{{user.userId}}}"
                      >My Todos
                      </a>
-                     {{#if todos}}
+                     {{#if user.todosCount}}
                         <span
                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                         >
-                           {{{todos.length}}}
+                           {{{user.todosCount}}}
                            <span class="visually-hidden">unread messages</span>
                         </span>
                      {{/if}}

@@ -8,9 +8,11 @@ import {
    Res,
    Session,
 } from "@nestjs/common";
+import { User } from "@web/common/decorators/UserDecorator";
 import { Request, Response } from "express";
+import { SessionUser } from "./IdentityController";
 
-@Controller("")
+@Controller("/")
 export class ViewController {
    @Get("/")
    @Render("start")
@@ -21,9 +23,19 @@ export class ViewController {
    @Render("main")
    @Header("Content-Type", "text/html")
    @HttpCode(HttpStatus.OK)
-   async main(@Session() session: Record<string, any>, @Res() res: Response) {
-      res.locals.user = session.user;
+   async main(@User() user: SessionUser, @Res() res: Response) {
+      res.locals.user = user;
    }
+
+   @Render("login")
+   @Header("Content-Type", "text/html")
+   @Get("/login")
+   async loginPage() {}
+
+   @Render("register")
+   @Header("Content-Type", "text/html")
+   @Get("/register")
+   async registerPage() {}
 
    @Get("/session-check")
    async checkUserSession(@Session() session: Request["session"]) {

@@ -3,16 +3,16 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import * as RedisStore from "connect-redis";
 import * as session from "express-session";
 import { RedisClient } from "redis";
-import { REDIS, RedisCacheModule } from "./RedisCacheModule";
+import { REDIS_CLIENT, RedisCacheModule } from "./RedisCacheModule";
 
-export const HTTP_SESSION_CONFIG = Symbol.for("HttpSessionConfig");
+export const SESSION_CONFIG = Symbol.for("HttpSessionConfig");
 
 @Module({
    imports: [RedisCacheModule, ConfigModule],
    providers: [
       ConfigService,
       {
-         provide: HTTP_SESSION_CONFIG,
+         provide: SESSION_CONFIG,
          useFactory: (
             redisClient: RedisClient,
             configService: ConfigService
@@ -32,9 +32,9 @@ export const HTTP_SESSION_CONFIG = Symbol.for("HttpSessionConfig");
                logErrors: true,
             }),
          }),
-         inject: [REDIS, ConfigService],
+         inject: [REDIS_CLIENT, ConfigService],
       },
    ],
-   exports: [HTTP_SESSION_CONFIG],
+   exports: [SESSION_CONFIG],
 })
 export class AppConfigModule {}

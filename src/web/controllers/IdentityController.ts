@@ -5,15 +5,12 @@ import {
    Body,
    Controller,
    Get,
-   Header,
    HttpCode,
    HttpStatus,
    Inject,
    Post,
    Put,
    Redirect,
-   Render,
-   Req,
    Res,
    Session,
 } from "@nestjs/common";
@@ -40,7 +37,7 @@ export interface SessionUser {
    lastName: string;
 }
 
-@Controller("")
+@Controller("/")
 export class IdentityController {
    constructor(
       @Inject(IIdentityService)
@@ -49,7 +46,6 @@ export class IdentityController {
 
    @Post("/login")
    @HttpCode(HttpStatus.OK)
-   @Redirect("/main")
    async login(
       @Session() session: Request["session"],
       @Body(new UserLoginValidationPipe())
@@ -60,43 +56,31 @@ export class IdentityController {
       const user = await this._identityService.login({ email, password });
 
       // @ts-ignore
-      session.user = res.locals.user = user;
+      session.user = user;
       return user;
    }
-
-   @Render("login")
-   @Header("Content-Type", "text/html")
-   @Get("/login")
-   async loginPage(@Res({ passthrough: true }) res: Response) {}
 
    @Get("/logout")
    @HttpCode(HttpStatus.OK)
    @Redirect("/")
    async logout(@Session() session: Request["session"]) {
-      if (session) {
-         session?.destroy(() => {});
-      }
+      session && session.destroy(() => {});
    }
 
    @Post("/register")
-   @Redirect("/main")
    async register(
       @Session() session: Request["session"],
       @Body(new UserSignUpValidationPipe())
       userRegisterInput: UserRegisterRequestModel,
-      @Res()
+      @Res({ passthrough: true })
       res: Response
    ) {
       const user = await this._identityService.register(userRegisterInput);
 
       // @ts-ignore
-      session.user = res.locals.user = user;
+      session.user = user;
+      return user;
    }
-
-   @Render("register")
-   @Header("Content-Type", "text/html")
-   @Get("/register")
-   async registerPage() {}
 
    @Put("/change-password")
    @HttpCode(HttpStatus.NO_CONTENT)

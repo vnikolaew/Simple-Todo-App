@@ -10,17 +10,12 @@ import {
    LoggingMiddleware,
    URLEncodedParserHandler,
 } from "@web/middleware";
-import {
-   AppConfigModule,
-   HTTP_SESSION_CONFIG,
-} from "./modules/AppConfigModule";
-import { RedisCacheModule } from "./modules/RedisCacheModule";
+import { AppConfigModule, SESSION_CONFIG } from "./modules/AppConfigModule";
 
 @Module({
    imports: [
       ConfigModule.forRoot({ isGlobal: true, envFilePath: "./.dev.env" }),
       DatabaseModule,
-      RedisCacheModule,
       ViewsModule,
       IdentityModule,
       TodoItemModule,
@@ -29,7 +24,7 @@ import { RedisCacheModule } from "./modules/RedisCacheModule";
 })
 export class AppModule implements NestModule {
    constructor(
-      @Inject(HTTP_SESSION_CONFIG) private sessionConfig: session.SessionOptions
+      @Inject(SESSION_CONFIG) private sessionConfig: session.SessionOptions
    ) {}
    configure(consumer: MiddlewareConsumer) {
       consumer

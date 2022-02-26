@@ -5,10 +5,8 @@ window.onload = function (e) {
    );
 
    const addTodoButton = document.querySelector("button.add-todo");
-   console.log(addTodoButton);
 
    const editTodoButtons = document.querySelectorAll("button.edit-todo");
-   console.log(editTodoButtons);
 
    const toggleCompletionButtons = document.querySelectorAll(
       "button.mark-completed-todo-btn"
@@ -77,7 +75,6 @@ window.onload = function (e) {
          deleteTodoItem(todoId);
       });
    });
-   console.log(deleteTodoButtons);
 };
 
 function deleteTodoItem(todoId) {
@@ -136,7 +133,6 @@ async function editTodoItem(todoId, title, description, priority) {
 
 function toggleTodoCompletion(todoId) {
    const todoTitleDiv = document.querySelector(`div.todo-title-${todoId}`);
-   const completed = todoTitleDiv.dataset.completed;
 
    // Do a PUT request:
    fetch(`/todos/toggle-complete/${todoId}`, {
